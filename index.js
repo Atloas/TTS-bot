@@ -41,7 +41,8 @@ bot.on("message", function(message)
 
     else if(message.channel.name == channel && message.content.startsWith(prefix + "tts"))
     {
-        var toSend = message.author.username.split("#")[0] + " " + message.content.split(" ")[1];
+        var toSend = message.author.username.split("#")[0] + ":" +  message.content.slice(message.content.indexOf(" "), message.content.length);
+        message.delete();
         message.channel.send(toSend, { tts: true });
     }
 });
