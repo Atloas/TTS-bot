@@ -23,6 +23,7 @@ bot.on("message", function(message)
         dataToWrite = JSON.stringify(data);
         fs.writeFileSync('data.json', dataToWrite);
         message.channel.send('Prefix changed to ' + prefix);
+        console.log('Prefix changed to ' + prefix);
     }
     
     else if(message.content.startsWith(prefix + "channel"))
@@ -37,6 +38,7 @@ bot.on("message", function(message)
         dataToWrite = JSON.stringify(data);
         fs.writeFileSync('data.json', dataToWrite);
         message.channel.send("Target channel changed to " + channel);
+        console.log("Target channel changed to " + channel);
     }
 
     else if(message.channel.name == channel && message.content.startsWith(prefix + "tts"))
@@ -44,6 +46,7 @@ bot.on("message", function(message)
         var toSend = message.author.username.split("#")[0] + ":" +  message.content.slice(message.content.indexOf(" "), message.content.length);
         message.delete();
         message.channel.send(toSend, { tts: true });
+        console.log(toSend);
     }
 
     else if(message.channel.name == channel && message.content.startsWith(prefix + "cabalonmars"))
@@ -51,10 +54,23 @@ bot.on("message", function(message)
         message.delete();
         var toSend = "Zavala: Whether we wanted it or not, we've stepped into a war with the Cabal on Mars. So let's get to taking out their command, one by one."
         message.channel.send(toSend, { tts: true });
-        toSend = "Valus Ta'aurc. From what I can gather he commands the Siege Dancers from an Imperial Land Tank outside of Rubicon.";
+        console.log(toSend);
+    }
+
+    else if(message.channel.name == channel && message.content.startsWith(prefix + "drift"))
+    {
+        message.delete();
+        var toSend = "Xol: You, Shall, Drift."
         message.channel.send(toSend, { tts: true });
-        toSend = "He's well protected, but with the right team, we can punch through those defenses, take this beast out, and break their grip on Freehold.";
+        console.log(toSend);
+    }
+
+    else if(message.channel.name == channel && message.content.startsWith(prefix + "fat"))
+    {
+        message.delete();
+        var toSend = "Calus: Grow fat from strength!"
         message.channel.send(toSend, { tts: true });
+        console.log(toSend);
     }
 });
 
