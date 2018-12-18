@@ -12,7 +12,7 @@ var prefix = data.prefix;
 bot.on("message", function(message)
 {
     var content = message.content;
-    if(content.startsWith("?"))
+    if(content.startsWith(prefix))
     {
         var command = content.split(" ")[0];
         if(command == prefix + "prefix")
