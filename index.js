@@ -11,66 +11,77 @@ var prefix = data.prefix;
 
 bot.on("message", function(message)
 {
-    if(message.content.startsWith(prefix + "prefix"))
+    var content = message.content;
+    if(content.startsWith("?"))
     {
-        if(message.content.split(" ").length == 1)
+        var command = content.split(" ")[0];
+        if(command == prefix + "prefix")
         {
-            message.channel.send("Failed to change prefix: no prefix argument passed.");
-            return;
+            if(content.split(" ").length == 1)
+            {
+                message.channel.send("Failed to change prefix: no prefix argument passed.");
+                return;
+            }
+            prefix = content.split(" ")[1];
+            data.prefix = prefix;
+            dataToWrite = JSON.stringify(data);
+            fs.writeFileSync('data.json', dataToWrite);
+            message.channel.send('Prefix changed to ' + prefix);
+            console.log('Prefix changed to ' + prefix);
         }
-        prefix = message.content.split(" ")[1];
-        data.prefix = prefix;
-        dataToWrite = JSON.stringify(data);
-        fs.writeFileSync('data.json', dataToWrite);
-        message.channel.send('Prefix changed to ' + prefix);
-        console.log('Prefix changed to ' + prefix);
-    }
-    
-    else if(message.content.startsWith(prefix + "channel"))
-    {
-        if(message.content.split(" ").length == 1)
+        
+        else if(command == prefix + "channel")
         {
-            message.channel.send("Failed to change channel: no channel argument passed.");
-            return;
+            if(content.split(" ").length == 1)
+            {
+                message.channel.send("Failed to change channel: no channel argument passed.");
+                return;
+            }
+            channel = content.split(" ")[1];
+            data.channel = channel;
+            dataToWrite = JSON.stringify(data);
+            fs.writeFileSync('data.json', dataToWrite);
+            message.channel.send("Target channel changed to " + channel);
+            console.log("Target channel changed to " + channel);
         }
-        channel = message.content.split(" ")[1];
-        data.channel = channel;
-        dataToWrite = JSON.stringify(data);
-        fs.writeFileSync('data.json', dataToWrite);
-        message.channel.send("Target channel changed to " + channel);
-        console.log("Target channel changed to " + channel);
-    }
 
-    else if(message.channel.name == channel && message.content.startsWith(prefix + "tts"))
-    {
-        var toSend = message.author.username.split("#")[0] + ":" +  message.content.slice(message.content.indexOf(" "), message.content.length);
-        message.delete();
-        message.channel.send(toSend, { tts: true });
-        console.log(toSend);
-    }
-
-    else if(message.channel.name == channel && message.content.startsWith(prefix + "cabalonmars"))
-    {
-        message.delete();
-        var toSend = "Zavala: Whether we wanted it or not, we've stepped into a war with the Cabal on Mars. So let's get to taking out their command, one by one."
-        message.channel.send(toSend, { tts: true });
-        console.log(toSend);
-    }
-
-    else if(message.channel.name == channel && message.content.startsWith(prefix + "drift"))
-    {
-        message.delete();
-        var toSend = "Xol: You, Shall, Drift."
-        message.channel.send(toSend, { tts: true });
-        console.log(toSend);
-    }
-
-    else if(message.channel.name == channel && message.content.startsWith(prefix + "fat"))
-    {
-        message.delete();
-        var toSend = "Calus: Grow fat from strength!"
-        message.channel.send(toSend, { tts: true });
-        console.log(toSend);
+        else if(message.channel.name == channel)
+        {
+            var toSend;
+            var doTTS = true;
+            switch (command)
+            {
+                case prefix + "tts":
+                {
+                    var toSend = message.author.username.split("#")[0] + ":" +  content.slice(message.content.indexOf(" "), content.length);
+                    break;
+                }
+                case prefix + "cabalonmars":
+                {
+                    toSend = "Zavala: Whether we wanted it or not, we've stepped into a war with the Cabal on Mars. So let's get to taking out their command, one by one.";
+                    break;
+                }
+                case prefix + "drift":
+                {
+                    toSend = "Xol: You, Shall, Drift."
+                    break;
+                }
+                case prefix + "fat":
+                {
+                    toSend = "Calus: Grow fat from strength!";
+                    break;
+                }
+                default:
+                {
+                    toSend = "Command unrecognized."
+                    doTTS = false;
+                    break;
+                }
+            }
+            message.delete();
+            message.channel.send(toSend, { tts: doTTS });
+            console.log(toSend);
+        }
     }
 });
 
