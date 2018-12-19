@@ -11,9 +11,10 @@ var prefix = data.prefix;
 
 bot.on("message", function(message)
 {
-    var content = message.content;
+    var content = message.content.toLowerCase();
     if(content.startsWith(prefix))
     {
+        console.log("IN: " + message.content);
         var command = content.split(" ")[0];
         if(command == prefix + "prefix")
         {
@@ -27,7 +28,7 @@ bot.on("message", function(message)
             dataToWrite = JSON.stringify(data);
             fs.writeFileSync('data.json', dataToWrite);
             message.channel.send('Prefix changed to ' + prefix);
-            console.log('Prefix changed to ' + prefix);
+            console.log("OUT: " + 'Prefix changed to ' + prefix);
         }
         
         else if(command == prefix + "channel")
@@ -42,7 +43,7 @@ bot.on("message", function(message)
             dataToWrite = JSON.stringify(data);
             fs.writeFileSync('data.json', dataToWrite);
             message.channel.send("Target channel changed to " + channel);
-            console.log("Target channel changed to " + channel);
+            console.log("OUT: " + "Target channel changed to " + channel);
         }
 
         else if(message.channel.name == channel)
@@ -71,6 +72,11 @@ bot.on("message", function(message)
                     toSend = "Calus: Grow fat from strength!";
                     break;
                 }
+                case prefix + "cabalagain":
+                {
+                    toSend = "Asher: Cabal again?! With their rock-shaking, concentration-shattering machinery!";
+                    break;
+                }
                 default:
                 {
                     toSend = "Command unrecognized."
@@ -80,7 +86,7 @@ bot.on("message", function(message)
             }
             message.delete();
             message.channel.send(toSend, { tts: doTTS });
-            console.log(toSend);
+            console.log("OUT: " + toSend);
         }
     }
 });
