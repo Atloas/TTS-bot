@@ -52,11 +52,6 @@ bot.on("message", function(message)
             var doTTS = true;
             switch (command)
             {
-                case prefix + "tts":
-                {
-                    var toSend = message.author.username.split("#")[0] + ":" +  content.slice(message.content.indexOf(" "), content.length);
-                    break;
-                }
                 case prefix + "cabalonmars":
                 {
                     toSend = "Zavala: Whether we wanted it or not, we've stepped into a war with the Cabal on Mars. So let's get to taking out their command, one by one.";
@@ -79,8 +74,7 @@ bot.on("message", function(message)
                 }
                 default:
                 {
-                    toSend = "Command unrecognized."
-                    doTTS = false;
+                    var toSend = message.author.username.split("#")[0] + ": " +  content.split(prefix)[1];
                     break;
                 }
             }
