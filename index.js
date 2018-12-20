@@ -12,44 +12,29 @@ var prefix = data.prefix;
 bot.on("message", function(message)
 {
     var content = message.content.toLowerCase();
+    var toSend = "Command unrecognized!";
+
+    if(message.author == bot.user)
+        return;
+
+    //Preset commands
     if(content.startsWith(prefix))
     {
         console.log("IN: " + message.content);
+        var doTTS = true;
         var command = content.split(" ")[0];
         if(command == prefix + "prefix")
         {
-            if(content.split(" ").length == 1)
-            {
-                message.channel.send("Failed to change prefix: no prefix argument passed.");
-                return;
-            }
-            prefix = content.split(" ")[1];
-            data.prefix = prefix;
-            dataToWrite = JSON.stringify(data);
-            fs.writeFileSync('data.json', dataToWrite);
-            message.channel.send('Prefix changed to ' + prefix);
-            console.log("OUT: " + 'Prefix changed to ' + prefix);
+            doTTS = false;
+            toSend = setPrefix(content);
         }
-        
         else if(command == prefix + "channel")
         {
-            if(content.split(" ").length == 1)
-            {
-                message.channel.send("Failed to change channel: no channel argument passed.");
-                return;
-            }
-            channel = content.split(" ")[1];
-            data.channel = channel;
-            dataToWrite = JSON.stringify(data);
-            fs.writeFileSync('data.json', dataToWrite);
-            message.channel.send("Target channel changed to " + channel);
-            console.log("OUT: " + "Target channel changed to " + channel);
+            doTTS = false;
+            toSend = content.split(" ").length == 1 ? getChannel() : setChannel(content);
         }
-
         else if(message.channel.name == channel)
         {
-            var toSend;
-            var doTTS = true;
             switch (command)
             {
                 case prefix + "cabalonmars":
@@ -74,16 +59,53 @@ bot.on("message", function(message)
                 }
                 default:
                 {
-                    var toSend = message.author.username.split("#")[0] + ": " +  content.split(prefix)[1];
-                    break;
+                    doTTS = false;
                 }
             }
-            message.delete();
-            message.channel.send(toSend, { tts: doTTS });
-            console.log("OUT: " + toSend);
         }
+        if(doTTS)
+            message.delete();
+        message.channel.send(toSend, { tts: doTTS });
+        console.log("OUT: " + toSend);
+    }
+
+    //General TTS
+    else if(message.channel.name == channel)
+    {
+        console.log("IN: " + message.content);
+        toSend = message.author.username.split("#")[0] + ": " +  content;
+        message.delete();
+        message.channel.send(toSend, { tts: true });
+        console.log("OUT: " + toSend);
     }
 });
+
+function setPrefix(content)
+{
+    if(content.split(" ").length == 1)
+        return "Failed to change prefix: no prefix argument passed.";
+
+    prefix = content.split(" ")[1];
+    data.prefix = prefix;
+    dataToWrite = JSON.stringify(data);
+    fs.writeFileSync('data.json', dataToWrite);
+    return "Prefix changed to " + prefix;
+}
+
+function setChannel(content)
+{
+
+    channel = content.split(" ")[1];
+    data.channel = channel;
+    dataToWrite = JSON.stringify(data);
+    fs.writeFileSync('data.json', dataToWrite);
+    return "Channel changed to " + channel;
+}
+
+function getChannel()
+{
+    return "Channel is set to " + channel;
+}
 
 bot.on("ready", function()
 {
