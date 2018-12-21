@@ -47,6 +47,11 @@ bot.on("message", function(message)
                     toSend = "Xol: You, Shall, Drift."
                     break;
                 }
+                case prefix + "drown":
+                {
+                    toSend = "Xol: You, Shall, Drown, In, The, Deep.";
+                    break;
+                }
                 case prefix + "fat":
                 {
                     toSend = "Calus: Grow fat from strength!";
