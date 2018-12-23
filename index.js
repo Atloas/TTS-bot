@@ -62,6 +62,11 @@ bot.on("message", function(message)
                     toSend = "Asher: Cabal again?! With their rock-shaking, concentration-shattering machinery!";
                     break;
                 }
+                case prefix + "dreams":
+                {
+                    toSend = "Shia: Don't let your dreams be dreams!";
+                    break;
+                }
                 default:
                 {
                     doTTS = false;
