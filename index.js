@@ -9,6 +9,13 @@ var dataToWrite;
 var channel = data.channel;
 var prefix = data.prefix;
 
+var date = new Date();
+
+function getFormattedDate()
+{
+    return "[" + date.getMinutes() + ":" + date.getHours() + " " + date.getDay() + "/" + date.getMonth() + "/" + date.getFullYear() + "]";
+}
+
 bot.on("message", function(message)
 {
     var content = message.content.toLowerCase();
@@ -20,7 +27,7 @@ bot.on("message", function(message)
     //Preset commands
     if(content.startsWith(prefix))
     {
-        console.log("IN: " + message.content);
+        console.log(getFormattedDate() + " IN: " + message.content);
         var doTTS = true;
         var command = content.split(" ")[0];
         if(command == prefix + "prefix")
@@ -80,29 +87,33 @@ bot.on("message", function(message)
         if(doTTS)
             message.delete();
         message.channel.send(toSend, { tts: doTTS });
-        console.log("OUT: " + toSend);
+        console.log(getFormattedDate() + " OUT: " + toSend);
     }
 
     //General TTS
     else if(message.channel.name == channel)
     {
-        console.log("IN: " + message.content);
+        console.log(getFormattedDate() + " IN: " + message.content);
         toSend = message.author.username.split("#")[0] + ": " +  content;
         message.delete();
         message.channel.send(toSend, { tts: true });
-        console.log("OUT: " + toSend);
+        console.log(getFormattedDate() + " OUT: " + toSend);
     }
 });
 
 function setPrefix(content)
 {
     if(content.split(" ").length == 1)
-        return "Failed to change prefix: no prefix argument passed.";
+    {
+        console.log(getFormattedDate() + " OUT: ERROR: Failed to change prefix: no prefix argument passed.");
+        return "ERROR: Failed to change prefix: no prefix argument passed.";
+    }
 
     prefix = content.split(" ")[1];
     data.prefix = prefix;
     dataToWrite = JSON.stringify(data);
     fs.writeFileSync('data.json', dataToWrite);
+    console.log(getFormattedDate() + " OUT: Prefix changed to " + prefix);
     return "Prefix changed to " + prefix;
 }
 
@@ -113,11 +124,13 @@ function setChannel(content)
     data.channel = channel;
     dataToWrite = JSON.stringify(data);
     fs.writeFileSync('data.json', dataToWrite);
+    console.log(getFormattedDate() + " OUT: Channel changed to " + channel);
     return "Channel changed to " + channel;
 }
 
 function getChannel()
 {
+    console.log(getFormattedDate() + " OUT: Channel is set to " + channel);
     return "Channel is set to " + channel;
 }
 
