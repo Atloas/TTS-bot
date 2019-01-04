@@ -93,7 +93,7 @@ bot.on("message", function(message)
     //General TTS
     else if(message.channel.name == channel)
     {
-        console.log(getFormattedDate() + message.author.username + ": IN: " + message.content);
+        console.log(getFormattedDate() + " " + message.author.username + ": IN: " + message.content);
         toSend = message.author.username.split("#")[0] + ": " + content;
         message.delete();
         message.channel.send(toSend, { tts: true });
