@@ -13,7 +13,7 @@ var date = new Date();
 
 function getFormattedDate()
 {
-    return "[" + date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear() + " " + date.getMinutes() + ":" + date.getHours() + "]";
+    return "[" + date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + "]";
 }
 
 bot.on("message", function(message)
