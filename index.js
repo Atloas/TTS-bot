@@ -67,6 +67,10 @@ bot.on("message", function(message)
                     toSend = "Shia: Don't let your dreams be dreams!";
                     break;
                 }
+                case prefix + "ignore":
+                {
+                    return;
+                }
                 default:
                 {
                     doTTS = false;
