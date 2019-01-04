@@ -27,7 +27,7 @@ bot.on("message", function(message)
     //Preset commands
     if(content.startsWith(prefix))
     {
-        console.log(getFormattedDate() + " " + message.author.username + ": IN: " + message.content);
+        console.log(getFormattedDate() + " IN: " + message.author.username + ": " + message.content);
         var doTTS = true;
         var command = content.split(" ")[0];
         if(command == prefix + "prefix")
@@ -93,7 +93,7 @@ bot.on("message", function(message)
     //General TTS
     else if(message.channel.name == channel)
     {
-        console.log(getFormattedDate() + " " + message.author.username + ": IN: " + message.content);
+        console.log(getFormattedDate() + " IN: " + message.author.username + ": " + message.content);
         toSend = message.author.username.split("#")[0] + ": " + content;
         message.delete();
         message.channel.send(toSend, { tts: true });
