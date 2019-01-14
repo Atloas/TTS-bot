@@ -8,11 +8,12 @@ var data = JSON.parse(rawData);
 var dataToWrite;
 var channel = data.channel;
 var prefix = data.prefix;
+var date;
 
-var date = new Date();
 
 function getFormattedDate()
 {
+    var date = new Date();
     return "[" + date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes() + "]";
 }
 
